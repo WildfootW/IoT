@@ -33,6 +33,7 @@ owner 在 2026-10-10 提出「從 0 重新思考架構：腦中是 PCIe，但下
 | [50-synthesis/completeness.md](50-synthesis/completeness.md) | 完整性批評，7 個缺口；核對 101 條 M／F／N、19 個開放問題與九個情境錨點 |
 | [50-synthesis/final.md](50-synthesis/final.md) | 最終 15 節設計建議；§15 為十項 owner 決策、反駁與缺口裁決、相對草稿的變更摘要 |
 | [50-synthesis/owner-summary.md](50-synthesis/owner-summary.md) | owner 版摘要：模型現在的形狀、14 個關鍵決策的理由與證據、不支援組合與待拍板事項 |
+| [50-synthesis/comparison.md](50-synthesis/comparison.md) | 我們的架構對照十種常見架構：八個軸的優劣、總表、哪些情境該改選別人 |
 
 ## 一段話版結論（最終）
 
