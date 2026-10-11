@@ -34,6 +34,7 @@ owner 在 2026-10-10 提出「從 0 重新思考架構：腦中是 PCIe，但下
 | [50-synthesis/final.md](50-synthesis/final.md) | 最終 15 節設計建議；§15 為十項 owner 決策、反駁與缺口裁決、相對草稿的變更摘要 |
 | [50-synthesis/owner-summary.md](50-synthesis/owner-summary.md) | owner 版摘要：模型現在的形狀、14 個關鍵決策的理由與證據、不支援組合與待拍板事項 |
 | [50-synthesis/comparison.md](50-synthesis/comparison.md) | 我們的架構對照十種常見架構：八個軸的優劣、總表、哪些情境該改選別人 |
+| [50-synthesis/decisions.md](50-synthesis/decisions.md) | Owner 決策單白話版：O01～O10 各在決什麼、選項、建議、不決定的後果、拍板順序 |
 | [50-synthesis/tree.md](50-synthesis/tree.md) | 樹狀架構圖：邏輯樹與 PCIe 對照、四個 plane、三種形狀、MQTT 位置、每層斷線行為 |
 | [50-synthesis/roles.md](50-synthesis/roles.md) | 五個角色視圖：管理中心、device、業務資料、全數據歷史、中間串接各由什麼跑、持有什麼、和誰講話、相對今天改了什麼 |
 

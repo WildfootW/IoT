@@ -22,3 +22,4 @@
 | 2026-10-11 | 主審寫 `50-synthesis/roles.md`：五個角色視圖 |
 | 2026-10-11 | 主審寫 `50-synthesis/tree.md`：樹狀架構圖 |
 | 2026-10-11 | owner 決定重新命名：root node / branch / leaf、Type 1～3、intake / projection、trust log / trust authority、recorder、watch API、connector、stand-in、job queue / result log、strict / inspected。活文件（final、owner-summary、comparison、roles、tree、README）改用新名；歷史文件保留舊稿寫法；詞彙表在 `03-brief.md` §9 |
+| 2026-10-11 | 主審寫 `50-synthesis/decisions.md`：O01～O10 白話版決策單 |
