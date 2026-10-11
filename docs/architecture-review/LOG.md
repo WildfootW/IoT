@@ -20,3 +20,4 @@
 | 2026-10-11 | 主審同步另一環境完成的波次 B 與 C（`bba799b`、`4dbf182`），寫 `50-synthesis/owner-summary.md` |
 | 2026-10-11 | 主審寫 `50-synthesis/comparison.md`：最終方案對照十種常見架構 |
 | 2026-10-11 | 主審寫 `50-synthesis/roles.md`：五個角色視圖 |
+| 2026-10-11 | 主審寫 `50-synthesis/tree.md`：樹狀架構圖 |
