@@ -112,3 +112,28 @@ docs/architecture-review/
 | 正確性 | correctness.md | F-46/F-47、丟命令、重複、順序、結果可觀察、離線、retention window、B-01～B-14 會不會重現 |
 | 情境擬合 | scenarios.md | D-01～D-06 與三種部署形狀逐一走過，一片螢幕的最小部署長什麼樣 |
 | 生態 | ecosystem.md | T1 MQTT 設備、D-06 HMI、第 N 個消費者、第三方工具、標準；失去與得到 |
+
+## 9. 詞彙表（2026-10-11 起的正式名稱）
+
+owner 於 2026-10-11 決定重新命名：角色名用樹的詞、程式名與角色名分開、每個名字只指一個東西、Tier 改寫為 Type。**活文件**（`50-synthesis/final.md`、`owner-summary.md`、`comparison.md`、`roles.md`、`tree.md`、`README.md`）已改用新名；**歷史文件**（`00`～`02`、`10-facts/`、`20-proposals/`、`30-critiques/`、`40-mqtt-ledger/`、`50-synthesis/interim.md`、`draft.md`、`refute-*.md`、`completeness.md`）保留舊稿寫法，閱讀時以本表對照。
+
+| 舊稿寫法 | 正式名稱 | 中文 | 說明 |
+|---|---|---|---|
+| `node`（程式） | `node`，角色以設定決定：`root` / `branch` / `leaf` | 節點 | 一支程式三種角色；解析外部位元組、發證、寫 DB、更新 helper 各自獨立 UID |
+| bridge 0、B0、north | **root node** | 根節點 | 樹的頂；registry 投影、issuer、watch API、recorder 在這裡。「root 側」指它所在的主機或 VM |
+| south bridge、south、bridge、site bridge | **branch** | 枝 | 有 children 的中間節點，可堆疊（sub-branch）；poller、intake 訂閱、validator、stand-in、快取、projection 在這裡 |
+| unit agent、unit（指樹上的端點時） | **leaf** | 葉 | 沒有 children 的端點。**unit 一詞保留**，專指硬體單元的身分（F-19、F-20：serial、key、unit/function 事實鍵）；一台 unit 的樹角色可以是 leaf，或在它輪詢 Type 1 時是 branch（F-25） |
+| function | function | 功能 | 不變 |
+| T1 / T2 / T3 | **Type 1 / Type 2 / Type 3** | 第一型 / 第二型 / 第三型 | 定義不變：封閉韌體 / 自家軟體 / 自家硬體安全 |
+| T1 representative | **stand-in** | 代表 | branch 替 Type 1 建立的代述者，標低信任 |
+| raw feed、raw_i、raw 實例、n 實例、local view | **intake**（每來源一個隔離實例）、**projection**（已驗證資料的唯讀投影，HTTPS 或 curated MQTT） | 進料口、投影 | 「raw」一詞保留給未聚合的歷史樣本（history raw / hourly） |
+| 安全 journal、安全管理 authority | **trust log**、**trust authority** | 信任紀錄、信任權威 | 唯一的安全決策權威；source event journal、migration journal、Type 1 origin journal 是別的東西，名稱不變 |
+| registry 投影 | registry | 登錄表 | 不變，由 trust log 重建 |
+| issuer | issuer | 發證者 | 不變 |
+| history writer、north writer | **recorder** | 記錄器 | 唯一持 history role 的 process |
+| consumer API | **watch API** | 訂閱介面 | list + watch |
+| integration hub、hub（Odoo 側） | **connector** | 連接器 | Odoo 側的單一 inbound 路由與 queue |
+| SQ / CQ | **job queue / result log** | 工單隊列 / 結果紀錄 | ERP 持 job queue；leaf 持 result log |
+| desired / actual、LKG | 不變 | 期望 / 實況、最後可用版 | |
+| Profile M / Profile I | **strict / inspected** | 嚴格 / 受檢 | strict：無 inspection 或 no-decrypt，mTLS；inspected：資料 owner 核准 inspection，只准非敏感 |
+| M-xx、F-xx、N-xx、C-xx、B-xx、D-xx、O01～O10、G-xxx、R1～R8 | 不變 | | 需求與審查編號 |
