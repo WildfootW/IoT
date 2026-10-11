@@ -31,6 +31,8 @@
 
 一屏的最小部署沒有 south bridge：unit 直接以 bridge 0 為 parent。第一個 T1 或本地 HMI 出現才加 south。
 
+**unit、south bridge、bridge 0 是同一支 node release**，差別只在設定啟用哪些角色與子 process：unit 啟用 backend，south 啟用 poller、raw feed 訂閱、validator、representative，bridge 0 啟用 issuer、writer、consumer API。同一支程式，但解析外部位元組的 process、發證的 process、寫 DB 的 process、更新 helper 各自獨立 UID，不合成一個特權 parser（`final.md` §2、§9、§12 Q19）。一台螢幕同時輪詢一個 T1 感測器時，它就是同時啟用 unit 與 south 角色的同一支 node（F-25）。
+
 ## 1. 管理中心
 
 | 面向 | 現在的設計 |
@@ -108,3 +110,16 @@
 | 業務資料 | desired、SQ、CMS、結果 archive、archive gate | Workflow 模組（第二個 adapter 需要 saga 才評） |
 | 全數據歷史 | 無 | 第一個 history 承諾：獨立 PostgreSQL 加 writer；超門檻才評替代引擎 |
 | 中間串接 | unit 直連 bridge 0 的 HTTPS 串流、consumer API | south bridge（第一個 T1 或本地 HMI）、raw feed（第一個 MQTT T1）、curated export（第一個要 SCADA 的 D-06） |
+
+## 7. 權威在哪：四本帳，不重疊
+
+| 事實 | 唯一耐久 owner | 在交接前誰暫持 | 其他地方的副本是什麼 |
+|---|---|---|---|
+| 業務意圖：desired、SQ、flight、deadline、CMS 內容與版本、門檻規則 | Odoo PG（加 CMS filestore） | 無；ERP 受理的線性化點是業務與 outbox 同一交易 | bridge 與 unit 的 desired 鏡像、LKG 只是快取，有版本可比對 |
+| 裝置實況：actual、CQ、UNKNOWN、鎖、dedupe 高水位、applied version | unit 的 SQLite | 無；它就是來源 | ERP 的結果 archive 是收到 receipt 後的業務紀錄（簽章、≥ 3 年）；unit 自己再留 ≥ 90 天 |
+| 身分與授權：binding、adopt、revoke、key、policy、分類、封存世代 | 安全 journal（獨立故障域） | registry 本地 pending，只能拒絕或隔離，不能宣稱已交接 | bridge 0 的 registry 是可重建投影；Odoo 的 Fleet 是業務投影，不能反推安全狀態 |
+| 量測樣本與事件 | 獨立 history PostgreSQL，自 PG commit receipt 起 | receipt 前：unit spool（48 小時或 1 GiB）、bridge spool（4 GiB）、T1 origin journal；來源收到 receipt 才釋放 | roll-up 是衍生表，可由 raw 以 dirty-bucket 重算；Grafana、MES 只讀 |
+
+三條規則讓四本帳不打架：ERP 永不持有樣本（F-03）；history PG 永不持有業務意圖；unit 的 actual 與 CQ 不由任何中介代簽。門檻越線這類「從量測算出來的業務事件」在資料 owner 節點計算並持久保存 transition 與 event_id，再以業務事件進 ERP archive，所以它同時出現在兩本帳但 owner 只有一個（算出它的節點）。
+
+還原的不對稱要知道：業務 PG 還原到舊備份會讓 ERP 忘記已受理的意圖，但不會復活已撤銷的裝置，因為撤銷住在安全 journal。history PG 還原到舊備份時，已發 receipt 的樣本來源可能已釋放 spool，那段就是真的丟了，必須顯示 gap 與 evidence_lost，不能冒稱完整；RPO 24 小時是 O05 待核的基線。
