@@ -27,3 +27,4 @@
 | 2026-10-11 | owner 裁決 O01（預設 inspected、線上零秘密）與 O02（Type 1 一律隔離 VLAN、只讓 branch 對外）；主審補 faq Q6（多 branch 同區網）、Q7（攝影機的 media plane） |
 | 2026-10-11 | owner 裁決 O03：B 優先、能 A 則 A、C 當底、不預期 D；既有 backend 重寫 |
 | 2026-10-11 | owner 裁決 O04：A 加 tryboot、W0 數字先接受、G-LANG 兩語言各做骨架、退路日後再議 |
+| 2026-10-11 | owner 定調 v1 姿態「剛剛好」：機制留、維運承諾縮、硬體不加；主審寫 `v1-posture.md` 覆蓋 O04～O10 的人力與流程部分 |
