@@ -91,7 +91,7 @@
 
 ## O05 保存、災復、trust log
 
-> **owner 定調（2026-10-11）：** 不簽 RPO/RTO，不做值班與雙人復原。機制保留：trust log 與業務備份分離、放我們的雲端（零站點硬體）、restore 先重播再發 epoch；解封設計成 k-of-n 可設，v1 用單一保管人加密封備用材料。對客戶：每日備份、盡力恢復、出問題再處理。
+> **owner 定調（2026-10-11）：** 不簽 RPO/RTO，不做值班與雙人復原。機制保留：trust log 與業務備份分離、restore 先重播再發 epoch；解封設計成 k-of-n 可設，v1 用單一保管人加密封備用材料。**位置：** owner 指出放我們雲端會讓客戶無法純本地運行，故改為部署 profile：(a)(b) 預設本地（獨立 append-only hash chain、獨立備份流、fleet revision 高水位當 rollback 見證、整台毀損走重新 adopt），(c) 或客戶要求時才放我們雲端，另有只送 digest 的雲端見證可選（`faq.md` Q8）。對客戶：每日備份、盡力恢復、出問題再處理。
 
 
 **在決什麼。** 業務資料的 RPO 與 RTO，以及安全決策的保管制度。

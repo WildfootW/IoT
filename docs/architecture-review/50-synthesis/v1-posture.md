@@ -6,7 +6,7 @@
 
 1. **軟體把機制做對，因為複製不用成本。** 簽章、trust log 與業務備份分離、UNKNOWN 語意、archive gate、retention window、救援映像：這些寫一次、每個站點免費，全部保留。
 2. **維運承諾做小。** 不簽 RPO、RTO、SLO；不做值班；不做雙人保管；不做定期演練。對客戶的說法是：每日備份、盡力恢復、出問題再處理。非常 critical 的場景不在目前規劃內。
-3. **硬體不加。** 每站不多放機器：trust log 放我們的雲端而不是站點工作站；不裝 Mender server；branch 與隔離 switch 只在有 Type 1 時出現（O02 已定）。
+3. **硬體不加，也不加對我們的依賴。** 每站不多放機器：trust log 預設就在 root node 主機上，以 append-only hash chain 與獨立備份流分離於業務備份，fleet 的 revision 高水位當 rollback 見證；放我們雲端只是 (c) 形狀或客戶要求時的 profile（見 `faq.md` Q8）。不裝 Mender server；branch 與隔離 switch 只在有 Type 1 時出現（O02 已定）。純本地運行必須成立。
 4. **彈性保留在架構裡，不在承諾裡。** 多人解封、SLA、值班、演練，是日後做 robust 產品線時才啟用的選項。介面與設定要能開，v1 不開。
 5. **不本末倒置。** 第一個客戶要的是剛剛好的東西。
 
@@ -16,7 +16,7 @@
 |---|---|---|
 | 機制（軟體） | **全部保留** | 端到端簽章、trust log 獨立、registry 投影可重建、restore 先重播 trust log 再發 epoch、archive 是派送 gate、retention window 可設、救援映像、register 式更新、Type 1 隔離 |
 | 流程（人） | **縮到單人、盡力、無承諾** | 單一保管人加一份密封備用解封材料；上班時間處理；上線前演練一次，之後有事再做 |
-| 硬體（錢） | **不加** | trust log 在雲端；沒有站點工作站；沒有第二台 server；每屏一片 CM4 |
+| 硬體（錢） | **不加** | trust log 在 root node 主機上獨立儲存，不另設工作站；沒有第二台 server；每屏一片 CM4 |
 
 ## 接受的風險（明寫，讓決定是知情的）
 
@@ -40,7 +40,7 @@
 | 決策 | final 原建議 | v1 剛剛好版 |
 |---|---|---|
 | O04 維修人力 | 每盒每年 0.5～1 人日進報價 | 內部參考數，不進報價；救援 kit 的映像照做（軟體） |
-| O05 保存與災復 | RPO 24h / RTO 8h、服務窗、雙人復原加第三替補、站點工作站 | 每日備份、盡力恢復、無 SLA；trust log 在我們雲端；單一保管人加密封備用材料；解封設計成 k-of-n 可設，v1 用 1-of-2；上線前演練一次 |
+| O05 保存與災復 | RPO 24h / RTO 8h、服務窗、雙人復原加第三替補、站點工作站 | 每日備份、盡力恢復、無 SLA；trust log 預設本地：獨立 append-only hash chain、獨立備份流、fleet 見證 rollback、整台毀損走重新 adopt；雲端只在 (c) 或客戶要求；單一保管人加密封備用材料；解封 k-of-n 可設，v1 用 1-of-2；上線前演練一次 |
 | O06 PLC/HMI | 1 Hz p95 ≤ 1.5 s 等 SLO 門檻 | 等 partner 點表；reference HMI 先做 web projection；數字只當預設設定不當承諾；Sparkplug 等客戶 SCADA 需要才做 |
 | O07 D-05 | 具名硬體 SDK、boot policy、法定保存責任 | 延期；立案時先走 F-34 接既有門禁管理平台，不自建 Type 3；控制面不做；資料保存期可設可刪，法律責任在客戶 |
 | O08 BOM | 展開 28+U 權利表零空白 | 只做兩件：Anthias 映像的授權與維護狀態查一次；核心外部元件（Odoo、PostgreSQL、Mosquitto、Grafana）授權一行表。SBOM 由 build 自動產生。buy 不重開。G-PLAYER 等 Anthias 真出問題才啟 |
