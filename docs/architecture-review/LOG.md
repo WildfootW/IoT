@@ -29,3 +29,4 @@
 | 2026-10-11 | owner 裁決 O04：A 加 tryboot、W0 數字先接受、G-LANG 兩語言各做骨架、退路日後再議 |
 | 2026-10-11 | owner 定調 v1 姿態「剛剛好」：機制留、維運承諾縮、硬體不加；主審寫 `v1-posture.md` 覆蓋 O04～O10 的人力與流程部分 |
 | 2026-10-11 | owner 指出 trust log 放雲端會破壞純本地運行；改為部署 profile（本地預設、雲端為 (c) 或客戶要求、可選 digest 見證）。faq Q8、v1-posture、decisions 更新 |
+| 2026-10-11 | owner「沒異議，開始寫實作規格」。主審寫 `docs/spec/` 七檔（00-scope、10-contract、20-identity、30-roles、40-update、50-deployment、60-conformance、README）：第一個客戶版 v1 規格草稿 v0.1，依 O01～O04 裁決、v1 姿態與 trust log 本地預設寫成；conformance case CF-01～20、e2e E-01～07、PoC P-01～07。數字為設計預算，未經 PoC |

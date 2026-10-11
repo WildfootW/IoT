@@ -10,6 +10,7 @@ owner 在 2026-10-10 提出「從 0 重新思考架構：腦中是 PCIe，但下
 | A | 8 份事實查核、6 份提案 | 完成 |
 | B | 每提案 5 個 lens 的批評、答辯、評分；MQTT 辯論與帳本 | **完成**：30 份批評、6 份答辯、6 份評分；正反方、帳本與獨立覆核齊備。305 條 finding 逐條答辯，六份加權算術已核對 |
 | C | 綜合、反駁、完整性批評、最終版 | **完成文件審查**：[最終版](50-synthesis/final.md) 共 15 節，251 條原始致命／重大、13 條反駁與 7 個完整性缺口均有去向；產品 PoC、外審與現場驗收尚未執行，不是生產批准 |
+| 實作規格 | 第一個客戶版 v1 規格（契約、身分、角色、更新、部署、conformance） | **草稿 v0.1**：[`../spec/`](../spec/README.md)，依 owner 十項裁決與 v1 姿態寫成；PoC 未跑 |
 
 ## 檔案
 
@@ -39,6 +40,7 @@ owner 在 2026-10-10 提出「從 0 重新思考架構：腦中是 PCIe，但下
 | [50-synthesis/decisions.md](50-synthesis/decisions.md) | Owner 決策單白話版：O01～O10 各在決什麼、選項、建議、不決定的後果、拍板順序 |
 | [50-synthesis/tree.md](50-synthesis/tree.md) | 樹狀架構圖：邏輯樹與 PCIe 對照、四個 plane、三種形狀、MQTT 位置、每層斷線行為 |
 | [50-synthesis/roles.md](50-synthesis/roles.md) | 五個角色視圖：管理中心、device、業務資料、全數據歷史、中間串接各由什麼跑、持有什麼、和誰講話、相對今天改了什麼 |
+| [../spec/](../spec/README.md) | **v1 實作規格**（在 `docs/spec/`）：`00-scope` 範圍與姿態、`10-contract` 四個動詞與信封、`20-identity` PKI 與 trust log、`30-roles` process 與資料模型、`40-update`、`50-deployment`、`60-conformance` |
 
 ## 一段話版結論（最終）
 
