@@ -24,3 +24,4 @@
 | 2026-10-11 | owner 決定重新命名：root node / branch / leaf、Type 1～3、intake / projection、trust log / trust authority、recorder、watch API、connector、stand-in、job queue / result log、strict / inspected。活文件（final、owner-summary、comparison、roles、tree、README）改用新名；歷史文件保留舊稿寫法；詞彙表在 `03-brief.md` §9 |
 | 2026-10-11 | 主審寫 `50-synthesis/decisions.md`：O01～O10 白話版決策單 |
 | 2026-10-11 | 主審寫 `50-synthesis/faq.md`：架構問答（含 MCU 當 unit、新增裝置要動哪幾層） |
+| 2026-10-11 | owner 裁決 O01（預設 inspected、線上零秘密）與 O02（Type 1 一律隔離 VLAN、只讓 branch 對外）；主審補 faq Q6（多 branch 同區網）、Q7（攝影機的 media plane） |

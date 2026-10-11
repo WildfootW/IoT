@@ -74,3 +74,34 @@
 | 新類別需要不同的 retention 或限速政策 | 只改設定 | window 與速率都是宣告式的 |
 
 **守住這件事的方法（意見）。** F-39 成立的前提是 branch 保持類型無知。在 conformance suite 放一條硬測試：一個 branch 從沒見過的 function class，必須原樣轉送且只被 root 的政策拒絕，branch 自己不得拒也不得改。這條測試壞掉的那天，就是有人把類型邏輯寫進中間層的那天。
+
+## Q6. 同一個區網只能有一個 branch 嗎？
+
+不是協定限制，是 M-04 的部署建議值。掃描（DNS、mDNS）只負責定位，不負責決定：leaf 只接受憑證鏈到預置環境根且符合 voucher 限制（env、tenant、parent）的 parent；真正的 parent 由 registry 在 adopt 時指派並寫進 cfg.parent；搬家就是 re-plug，path 變、unit 身分不變。所以同一 L2 可以有多個 branch（兩個租戶各一個、新舊並存）。一屏最小部署沒有 branch，voucher 直接寫 root node 的 FQDN。
+
+## Q7. 管理攝影機時，狀態走樹，那影像資料流量呢？
+
+**結論先講。** 影像永遠不進樹，也不進 trunk。樹管攝影機的身分、存活、設定與事件；影像是獨立的 media plane，圍堵點在 branch 旁的媒體中繼，授權由樹核發，錄影留在站點。這是 §9 Q17「哪些 channel 走樹、哪些直連」在 HMI projection 之後的第二個明列例外。PCIe 的類比剛好：攝影機像 GPU 或 NIC，config space 很小、DMA 很大，DMA 不會經過 config space，而是在 IOMMU 的映射下直達記憶體；我們的「映射」就是樹核發的 grant。
+
+**為什麼不能走樹。** 樹的回傳資料面是為 F-01 的每量測 ≤ 1 Hz 設計的：每 child ≤ 2 條連線、批次 ≤ 256 KiB、spool 以 GiB 計、history PG 三年幾十到幾百 GB。一路 1080p H.264 約 2 到 8 Mbps，十路就是 20 到 80 Mbps 持續不斷，三年是數百 TB。任何一個數字都和樹差三到五個數量級。
+
+**攝影機是什麼。** 封閉韌體，典型 Type 1，而且正是 O02 說的「關進自己 VLAN、只讓 branch 對外」的對象。
+
+| plane | 走哪裡 | 內容 |
+|---|---|---|
+| 管理 | 樹 | stand-in 代述：存活（ONVIF 或 RTSP 探測）、設定（解析度、碼率、NTP、帳密輪替）、韌體版本、分類裁決 |
+| 事件 | 樹 | 移動偵測、越線、斷訊、儲存滿等業務事件，≤ 1 Hz；縮圖快照當事件附件，不當影像流 |
+| 影像 | **media plane，不進樹** | 攝影機 → branch 旁的媒體中繼（intake 的影像版）→ 授權的觀看者；錄影在站點本地磁碟 |
+
+**media plane 的規則。**
+
+1. 攝影機只能到媒體中繼。中繼住在攝影機 VLAN 的邊界，是唯一的 RTSP / ONVIF client；觀看者永遠不直接碰攝影機。這和 intake 的邏輯一樣：hostile 來源只到一個隔離的收口。
+2. 觀看授權由樹核發。觀看者向中繼要串流時帶一張 root node 簽的短效 grant（scope 到 camera id、期限幾分鐘），中繼驗 grant 不驗帳密。撤銷走 trust log，和其他 grant 一樣。
+3. 錄影留在站點。中繼或 NVR 寫本地磁碟，保留以天或週計，由容量決定；樹只記錄「哪台、哪段時間、在哪個站點、保留到何時」的指針。history PG 永不收影像。
+4. 跨站觀看是另一個 profile。(c) 形狀下從雲端看站點影像，要嘛在 root 側放一個媒體中繼（頻寬與雲端出口費用是我們的）、要嘛 WebRTC 加 TURN（多一種元件）。第一版不支援遠端即時觀看，只支援站內 HMI VLAN 觀看與事件快照上送；有客戶需求再開 profile。
+5. 不自建影像軟體。媒體中繼與 NVR 是成熟品類：mediamtx、go2rtc、Frigate（含偵測，需較多算力）等皆為寬鬆授權；當 branch 旁的一個 backend process 跑，由樹管它的存活與設定。授權與維護者狀態未查證，採用前照 M-06 查。若客戶已有 NVR 或 VMS，走 F-34：它是一個 ERP connector，不重做。
+6. PTZ 這類會動的控制：是物理致動但無危險性，分類建議 Intent-Only（desired preset），由產品與安全 owner 裁決；門禁聯動開門仍是 Control-Semantic，不入樹。
+
+**ERP 看到什麼。** 攝影機在 Fleet 裡是一個 stand-in 功能，有存活與設定；事件進業務 archive 並可綰工作中心或工單；事件附縮圖；點「看影像」是跳到 projection 的播放頁，拿一張短效 grant，不是 ERP 自己轉影像。
+
+**意見。** 這題值得寫進最終版 §5 當第二個明列例外，並加一條 gate：影像流量零封包進 trunk，攝影機零路徑到觀看者。否則第一台攝影機進來時，有人會圖方便讓它直接推到螢幕或 ERP。
