@@ -50,6 +50,9 @@
 
 ## O03 job 與功能分類的承諾
 
+> **owner 裁決（2026-10-11）：** 優先 B（一次性動作集合化成 intent）；能做 A 的 backend 做 A（自家 backend 加 idempotency key 與結果查詢，例如 LED 控制器）；C（UNKNOWN 人工）當底；預期不會有 D（不可查又不可隔離而須禁售）的類別。既有 backend 依此重寫。分類裁決人與「不明即 Control」規則維持 final 原文。
+
+
 **在決什麼。** 哪些命令類別我們承諾正確性。state intent（desired 與 actual 比對）沒問題；一次性 job（LED effect、playlist 加一項）的物理效果與 result log 提交之間沒有原子性，會出現 UNKNOWN。
 
 | 選項 | 內容 |

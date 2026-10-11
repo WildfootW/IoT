@@ -25,3 +25,4 @@
 | 2026-10-11 | 主審寫 `50-synthesis/decisions.md`：O01～O10 白話版決策單 |
 | 2026-10-11 | 主審寫 `50-synthesis/faq.md`：架構問答（含 MCU 當 unit、新增裝置要動哪幾層） |
 | 2026-10-11 | owner 裁決 O01（預設 inspected、線上零秘密）與 O02（Type 1 一律隔離 VLAN、只讓 branch 對外）；主審補 faq Q6（多 branch 同區網）、Q7（攝影機的 media plane） |
+| 2026-10-11 | owner 裁決 O03：B 優先、能 A 則 A、C 當底、不預期 D；既有 backend 重寫 |
